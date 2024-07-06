@@ -61,12 +61,12 @@ Estructura de datos enlazada para almacenar cuentas sospechosas con la siguiente
 
 1. **Compilar el código**:
     ```sh
-    g++ src/Transaccion.cpp src/ArbolAVL.cpp src/ListaEnlazada.cpp src/Util.cpp main.cpp -I include -o gestion_transacciones
+    g++ src/Transaccion.cpp src/ArbolAVL.cpp src/ListaEnlazada.cpp src/NodoArbol.cpp src/Transaccion.cpp src/Util.cpp main.cpp -I include -o proyecto
     ```
 
 2. **Ejecutar el programa**:
     ```sh
-    ./gestion_transacciones
+    ./proyecto
     ```
 
 ### Método 2: Ejecución desde el Entorno de Desarrollo
