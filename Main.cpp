@@ -2,7 +2,17 @@
 #include "ArbolAVL.h"
 #include "Util.h"
 #include "ListaEnlazada.h"
+
 using namespace std;
+
+void mostrarMenu() {
+    cout << "Menu de opciones:" << endl;
+    cout << "1. Registrar transaccion" << endl;
+    cout << "2. Buscar transaccion por ID" << endl;
+    cout << "3. Generar reporte de transacciones sospechosas" << endl;
+    cout << "4. Guardar transacciones y sospechosos" << endl;
+    cout << "0. Salir" << endl;
+}
 
 int main() {
     ArbolAVL arbolAVL;
@@ -10,6 +20,7 @@ int main() {
     int opcion;
 
     arbolAVL = cargarTransacciones("data/transacciones.txt", cuentasSospechosas);
+    cargarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
 
     do {
         mostrarMenu();
@@ -20,9 +31,8 @@ int main() {
                 int id;
                 string cuentaOrigen, cuentaDestino, ubicacion, fecha, hora;
                 double monto;
+                int nuevoId = arbolAVL.obtenerUltimoId() + 1;
 
-                cout << "Ingrese ID: ";
-                cin >> id;
                 cout << "Ingrese cuenta origen: ";
                 cin >> cuentaOrigen;
                 cout << "Ingrese cuenta destino: ";
@@ -36,8 +46,8 @@ int main() {
                 cout << "Ingrese hora (HH:MM): ";
                 cin >> hora;
 
-                Transaccion* transaccion = new Transaccion(id, cuentaOrigen, cuentaDestino, monto, ubicacion, fecha, hora);
-                arbolAVL.insertar(transaccion, cuentasSospechosas);
+                Transaccion* transaccion = new Transaccion(nuevoId, cuentaOrigen, cuentaDestino, monto, ubicacion, fecha, hora);
+                arbolAVL.insertar(transaccion, cuentasSospechosas, arbolAVL);
                 break;
             }
             case 2: {
@@ -57,16 +67,19 @@ int main() {
                 NodoLista* nodo = cuentasSospechosas.obtenerCabeza();
                 while (nodo != nullptr) {
                     nodo->transaccion->mostrarTransaccion();
+                    cout << "Motivo: " << nodo->motivo << endl;  // Mostrar motivo de sospecha
                     nodo = nodo->siguiente;
                 }
                 break;
             }
             case 4: {
                 guardarTransacciones(arbolAVL, "data/transacciones.txt");
+                guardarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
                 break;
             }
             case 0: {
                 guardarTransacciones(arbolAVL, "data/transacciones.txt");
+                guardarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
                 cout << "Saliendo..." << endl;
                 break;
             }

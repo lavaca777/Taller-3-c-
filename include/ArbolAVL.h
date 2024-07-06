@@ -9,10 +9,11 @@ public:
 
     ArbolAVL() : raiz(nullptr) {}
 
-    void insertar(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas);
+    void insertar(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas, ArbolAVL& tansacciones);
     Transaccion* buscar(int id);
-
-    bool esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas);
+    int obtenerUltimoId() const;
+    int obtenerUltimoIdEnArbol(NodoArbol* nodo) const;
+    bool esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas, ArbolAVL& tansacciones, string& motivo);
 
 private:
     NodoArbol* insertarRecursivo(NodoArbol* nodo, Transaccion* transaccion);
@@ -21,4 +22,9 @@ private:
     int obtenerBalance(NodoArbol* nodo);
     NodoArbol* rotarDerecha(NodoArbol* y);
     NodoArbol* rotarIzquierda(NodoArbol* x);
+
+    bool ubicacionSospechosa(Transaccion* transaccion, ArbolAVL& arbolAVL);
+    void contarTransaccionesSospechosas(NodoArbol* nodo, Transaccion* transaccionActual, const string& horaActual, int intervaloMinutos, int& contador); 
+    int diferenciaHoras(const string& hora1, const string& hora2);
+
 };

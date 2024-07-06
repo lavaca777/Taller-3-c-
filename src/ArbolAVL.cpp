@@ -1,9 +1,13 @@
 #include "ArbolAVL.h"
+#include <sstream>
+#include <iostream>
+#include <cmath> 
 
-void ArbolAVL::insertar(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas) {
-    if (esTransaccionSospechosa(transaccion, cuentasSospechosas)) {
-        cout << "Transacción sospechosa. No se puede procesar." << endl;
-        cuentasSospechosas.insertar(transaccion);
+void ArbolAVL::insertar(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas, ArbolAVL& tansacciones) {
+    string motivo;
+    if (esTransaccionSospechosa(transaccion, cuentasSospechosas, tansacciones, motivo)) {
+        cout << "Transacción sospechosa: " << motivo << ". No se puede procesar." << endl;
+        cuentasSospechosas.insertar(transaccion, motivo);
     } else {
         raiz = insertarRecursivo(raiz, transaccion);
     }
@@ -60,20 +64,98 @@ Transaccion* ArbolAVL::buscarRecursivo(NodoArbol* nodo, int id) {
     return buscarRecursivo(nodo->derecha, id);
 }
 
-bool ArbolAVL::esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas) {
+bool ArbolAVL::esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas, ArbolAVL& transacciones, string& motivo) {
     double montoMaximo = 1000000;
-    string ubicacionSospechosa = "ubicacion_sospechosa"; // Ejemplo de ubicación sospechosa
 
     if (transaccion->monto > montoMaximo) {
+        motivo = "Monto mayor a 1.000.000";
         return true;
     }
 
     if (cuentasSospechosas.contieneCuenta(transaccion->cuentaOrigen) || cuentasSospechosas.contieneCuenta(transaccion->cuentaDestino)) {
+        motivo = "Cuenta previamente sospechosa";
         return true;
     }
 
-    return transaccion->ubicacion == ubicacionSospechosa;
+    if (ubicacionSospechosa(transaccion, transacciones)) {
+        motivo = "Desplazamiento sospechoso";
+        return true;
+    }
+
+    return false;
 }
+
+int ArbolAVL::obtenerUltimoId() const {
+    return obtenerUltimoIdEnArbol(raiz);
+}
+
+int ArbolAVL::obtenerUltimoIdEnArbol(NodoArbol* nodo) const {
+    if (nodo == nullptr) {
+        return 0;
+    }
+    while (nodo->derecha != nullptr) {
+        nodo = nodo->derecha;
+    }
+    return nodo->transaccion->id;
+}
+
+bool ArbolAVL::ubicacionSospechosa(Transaccion* transaccion, ArbolAVL& arbolAVL) {
+    const int intervaloMinutos = 5;
+    const int cantidadMinima = 3;
+    string horaActual = transaccion->hora;
+    int transaccionesSospechosas = 0;
+    contarTransaccionesSospechosas(raiz, transaccion, horaActual, intervaloMinutos, transaccionesSospechosas);
+
+    if (transaccionesSospechosas >= cantidadMinima) {
+        return true;
+    }
+
+    return false;
+}
+
+void ArbolAVL::contarTransaccionesSospechosas(NodoArbol* nodo, Transaccion* transaccionActual, const string& horaActual, int intervaloMinutos, int& contador) {
+    if (nodo == nullptr) {
+        return;
+    }
+
+    contarTransaccionesSospechosas(nodo->izquierda, transaccionActual, horaActual, intervaloMinutos, contador);
+
+    Transaccion* transaccionNodo = nodo->transaccion;
+
+    if (transaccionNodo != transaccionActual &&
+        (transaccionNodo->cuentaOrigen == transaccionActual->cuentaOrigen ||
+         transaccionNodo->cuentaDestino == transaccionActual->cuentaDestino) &&
+        diferenciaHoras(transaccionNodo->hora, horaActual) <= intervaloMinutos &&
+        transaccionNodo->ubicacion != transaccionActual->ubicacion) {
+        contador++;
+    }
+
+    contarTransaccionesSospechosas(nodo->derecha, transaccionActual, horaActual, intervaloMinutos, contador);
+}
+
+int ArbolAVL::diferenciaHoras(const string& hora1, const string& hora2) {
+    int horas1, minutos1, horas2, minutos2;
+    stringstream ss1(hora1);
+    char separador = ':';
+    if (!(ss1 >> horas1 >> separador >> minutos1)) {
+        cerr << "Error al parsear hora1: " << hora1 << endl;
+        return -1;
+    }
+
+    stringstream ss2(hora2);
+    if (!(ss2 >> horas2 >> separador >> minutos2)) {
+        cerr << "Error al parsear hora2: " << hora2 << endl;
+        return -1;
+    }
+
+    int totalMinutos1 = horas1 * 60 + minutos1;
+    int totalMinutos2 = horas2 * 60 + minutos2;
+
+    int diferencia = abs(totalMinutos1 - totalMinutos2);
+
+    return diferencia;
+}
+
 
 int ArbolAVL::obtenerAltura(NodoArbol* nodo) {
     if (nodo == nullptr) {

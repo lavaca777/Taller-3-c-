@@ -2,60 +2,89 @@
 #include <fstream>
 #include <sstream>
 
-void guardarTransaccionesRecursivo(NodoArbol* nodo, std::ofstream& file) {
+void guardarTransaccionesRecursivo(NodoArbol* nodo, ofstream& file) {
     if (nodo == nullptr) {
         return;
     }
     guardarTransaccionesRecursivo(nodo->izquierda, file);
     Transaccion* t = nodo->transaccion;
     file << t->id << "," << t->cuentaOrigen << "," << t->cuentaDestino << "," << t->monto << "," 
-         << t->ubicacion << "," << t->fecha << "," << t->hora << std::endl;
+         << t->ubicacion << "," << t->fecha << "," << t->hora << endl;
     guardarTransaccionesRecursivo(nodo->derecha, file);
 }
 
-void guardarTransacciones(ArbolAVL& arbol, const std::string& filename) {
-    std::ofstream file(filename, std::ios::out);  // Open in write mode
+void guardarTransacciones(ArbolAVL& arbol, const string& filename) {
+    ofstream file(filename, ios::out);  // Open in write mode
     guardarTransaccionesRecursivo(arbol.raiz, file);
     file.close();
 }
 
-ArbolAVL cargarTransacciones(const std::string& filename, ListaEnlazada& cuentasSospechosas) {
-    std::ifstream file(filename);
+ArbolAVL cargarTransacciones(const string& filename, ListaEnlazada& cuentasSospechosas) {
+    ifstream file(filename);
     ArbolAVL arbol;
-    std::string linea;
+    string linea;
 
-    while (std::getline(file, linea)) {
-        std::stringstream ss(linea);
-        std::string idStr, cuentaOrigen, cuentaDestino, montoStr, ubicacion, fecha, hora;
-        std::getline(ss, idStr, ',');
-        std::getline(ss, cuentaOrigen, ',');
-        std::getline(ss, cuentaDestino, ',');
-        std::getline(ss, montoStr, ',');
-        std::getline(ss, ubicacion, ',');
-        std::getline(ss, fecha, ',');
-        std::getline(ss, hora, ',');
+    while (getline(file, linea)) {
+        stringstream ss(linea);
+        string idStr, cuentaOrigen, cuentaDestino, montoStr, ubicacion, fecha, hora;
+        getline(ss, idStr, ',');
+        getline(ss, cuentaOrigen, ',');
+        getline(ss, cuentaDestino, ',');
+        getline(ss, montoStr, ',');
+        getline(ss, ubicacion, ',');
+        getline(ss, fecha, ',');
+        getline(ss, hora, ',');
 
-        int id = std::stoi(idStr);
-        double monto = std::stod(montoStr);
+        int id = stoi(idStr);
+        double monto = stod(montoStr);
 
         Transaccion* transaccion = new Transaccion(id, cuentaOrigen, cuentaDestino, monto, ubicacion, fecha, hora);
-        arbol.insertar(transaccion, cuentasSospechosas);
+        arbol.insertar(transaccion, cuentasSospechosas, arbol);
     }
 
     file.close();
     return arbol;
 }
 
-void mostrarMenu() {
-    std::cout << "Menu de opciones:" << std::endl;
-    std::cout << "1. Registrar transaccion" << std::endl;
-    std::cout << "2. Buscar transaccion por ID" << std::endl;
-    std::cout << "3. Generar reporte de transacciones sospechosas" << std::endl;
-    std::cout << "4. Guardar transacciones" << std::endl;
-    std::cout << "0. Salir" << std::endl;
+void guardarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
+    ofstream file(filename, ios::app);
+    NodoLista* actual = cuentasSospechosas.obtenerCabeza();
+
+    while (actual != nullptr) {
+        Transaccion* t = actual->transaccion;
+        file << t->id << "," << t->cuentaOrigen << "," << t->cuentaDestino << "," << t->monto << ","
+             << t->ubicacion << "," << t->fecha << "," << t->hora << "," << actual->motivo << endl;
+        actual = actual->siguiente;
+    }
+
+    file.close();
 }
 
+void cargarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
+    ifstream file(filename);
+    string linea;
 
+    while (getline(file, linea)) {
+        stringstream ss(linea);
+        string idStr, cuentaOrigen, cuentaDestino, montoStr, ubicacion, fecha, hora, motivo;
+        getline(ss, idStr, ',');
+        getline(ss, cuentaOrigen, ',');
+        getline(ss, cuentaDestino, ',');
+        getline(ss, montoStr, ',');
+        getline(ss, ubicacion, ',');
+        getline(ss, fecha, ',');
+        getline(ss, hora, ',');
+        getline(ss, motivo, ',');
+
+        int id = stoi(idStr);
+        double monto = stod(montoStr);
+
+        Transaccion* transaccion = new Transaccion(id, cuentaOrigen, cuentaDestino, monto, ubicacion, fecha, hora);
+        cuentasSospechosas.insertar(transaccion, motivo);
+    }
+
+    file.close();
+}
 
 /*
 criterios para transferencia sospechosa
