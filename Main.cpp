@@ -10,7 +10,6 @@ void mostrarMenu() {
     cout << "1. Registrar transaccion" << endl;
     cout << "2. Buscar transaccion por ID" << endl;
     cout << "3. Generar reporte de transacciones sospechosas" << endl;
-    cout << "4. Guardar transacciones y sospechosos" << endl;
     cout << "0. Salir" << endl;
 }
 
@@ -66,15 +65,12 @@ int main() {
                 cout << "Transacciones sospechosas:" << endl;
                 NodoLista* nodo = cuentasSospechosas.obtenerCabeza();
                 while (nodo != nullptr) {
-                    nodo->transaccion->mostrarTransaccion();
-                    cout << "Motivo: " << nodo->motivo << endl;  // Mostrar motivo de sospecha
+                    Transaccion* transaccion = nodo->transaccion;
+                    cout << transaccion->cuentaOrigen << " transfirio a " << transaccion->cuentaDestino
+                        << " el " << transaccion->fecha << " a las " << transaccion->hora << endl;
+                    cout << "Motivo de sospecha: " << nodo->motivo << "\n--------------------------------------------" <<endl;
                     nodo = nodo->siguiente;
                 }
-                break;
-            }
-            case 4: {
-                Util::guardarTransacciones(arbolAVL, "data/transacciones.txt");
-                Util::guardarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
                 break;
             }
             case 0: {
