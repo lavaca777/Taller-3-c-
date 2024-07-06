@@ -47,18 +47,77 @@ ArbolAVL cargarTransacciones(const string& filename, ListaEnlazada& cuentasSospe
 }
 
 void guardarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
-    ofstream file(filename, ios::app);
-    NodoLista* actual = cuentasSospechosas.obtenerCabeza();
+    ifstream inputFile(filename);
+    ofstream outputFile("temp.txt");  // Archivo temporal para almacenar nuevas cuentas sospechosas
 
+    if (!inputFile) {
+        cerr << "Error: No se pudo abrir el archivo de entrada " << filename << endl;
+        return;
+    }
+
+    // Leer las cuentas sospechosas existentes y verificar duplicados
+    string line;
+    bool encontrado = false;
+
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string idStr, cuentaOrigen, cuentaDestino, montoStr, ubicacion, fecha, hora, motivo;
+        getline(ss, idStr, ',');
+        getline(ss, cuentaOrigen, ',');
+        getline(ss, cuentaDestino, ',');
+        getline(ss, montoStr, ',');
+        getline(ss, ubicacion, ',');
+        getline(ss, fecha, ',');
+        getline(ss, hora, ',');
+        getline(ss, motivo, ',');
+
+        int id = stoi(idStr);
+        double monto = stod(montoStr);
+
+        // Verificar si la cuenta sospechosa ya existe
+        NodoLista* actual = cuentasSospechosas.obtenerCabeza();
+        encontrado = false;
+
+        while (actual != nullptr) {
+            Transaccion* t = actual->transaccion;
+            if (t->id == id &&
+                t->cuentaOrigen == cuentaOrigen &&
+                t->cuentaDestino == cuentaDestino &&
+                t->monto == monto &&
+                t->ubicacion == ubicacion &&
+                t->fecha == fecha &&
+                t->hora == hora &&
+                actual->motivo == motivo) {
+                encontrado = true;
+                break;
+            }
+            actual = actual->siguiente;
+        }
+
+        // Si no se encuentra duplicado, escribir en el archivo temporal
+        if (!encontrado) {
+            outputFile << line << endl;
+        }
+    }
+
+    // Agregar las nuevas cuentas sospechosas al archivo temporal
+    NodoLista* actual = cuentasSospechosas.obtenerCabeza();
     while (actual != nullptr) {
         Transaccion* t = actual->transaccion;
-        file << t->id << "," << t->cuentaOrigen << "," << t->cuentaDestino << "," << t->monto << ","
-             << t->ubicacion << "," << t->fecha << "," << t->hora << "," << actual->motivo << endl;
+        outputFile << t->id << "," << t->cuentaOrigen << "," << t->cuentaDestino << "," << t->monto << ","
+                   << t->ubicacion << "," << t->fecha << "," << t->hora << "," << actual->motivo << endl;
         actual = actual->siguiente;
     }
 
-    file.close();
+    inputFile.close();
+    outputFile.close();
+
+    // Renombrar el archivo temporal al original
+    remove(filename.c_str());
+    rename("temp.txt", filename.c_str());
 }
+
+
 
 void cargarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
     ifstream file(filename);
@@ -85,36 +144,3 @@ void cargarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& f
 
     file.close();
 }
-
-/*
-criterios para transferencia sospechosa
-
-si una misma cuenta hace transferencias en poco tiempo en ubicaciones diferentes
-ej: juan t-> pedro  U: u1 H:12:15
-    juan t-> javier U: u3 H:12:20
-    sospechozo
-
-si una cuenta hace una transferencia sobre 1.000.000
-ej: juan t-> pedro M: 1.200.000
-    sospechozo
-
-si una cuenta tranfiere "montos altos" en poco tiempo
-
-ej: juan t-> pedro  M:700.000  H:12:15
-    juan t-> javier M:800.000  H:12:18
-    juan t-> camila M:650.000  H:12:23
-
-creacion de reportes:
-
-los reportes tienen que tener el tipo de actividad sospechoza junto a las cuentas involucradas
-
-ej: juan: fue sospechozo por hacer transferencias en ubicaciones diferentes en poco tiempo
-    complices: pedro, javier
-
-ej: juan fue sospechozo por hacer una transferencia por sobre el limite establesido(1.000.000)
-    complice: pedro
-
-ej: juan: fue sospechozo por transferir mucho dinero en poco tiempo
-    complices: pedro, javier, camila
-
-*/ 

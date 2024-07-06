@@ -6,7 +6,7 @@
 void ArbolAVL::insertar(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas, ArbolAVL& tansacciones) {
     string motivo;
     if (esTransaccionSospechosa(transaccion, cuentasSospechosas, tansacciones, motivo)) {
-        cout << "Transacción sospechosa: " << motivo << ". No se puede procesar." << endl;
+        cout << "Transaccion sospechosa: " << motivo << ". No se puede procesar." << endl;
         cuentasSospechosas.insertar(transaccion, motivo);
     } else {
         raiz = insertarRecursivo(raiz, transaccion);
@@ -155,7 +155,6 @@ int ArbolAVL::diferenciaHoras(const string& hora1, const string& hora2) {
 
     return diferencia;
 }
-
 
 int ArbolAVL::obtenerAltura(NodoArbol* nodo) {
     if (nodo == nullptr) {
