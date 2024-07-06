@@ -83,7 +83,7 @@ Estructura de datos enlazada para almacenar cuentas sospechosas con la siguiente
     - `1. Registrar Transacción`: Permite registrar una nueva transacción.
     - `2. Buscar Transacción por ID`: Busca una transacción específica por su ID.
     - `3. Generar Reporte de Transacciones Sospechosas`: Muestra las transacciones marcadas como sospechosas y sus motivos.
-    - `0. Salir`: Cierra el programa.
+    - `0. Salir`: Cierra el programa y guarda los datos.
 
 ## Equipo de Trabajo
 
