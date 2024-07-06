@@ -1,1 +1,6 @@
 4,we,yy,666666,4,2023-07-02,14:33,Desplazamiento sospechoso
+4,we,yy,666666,4,2023-07-02,14:33,Desplazamiento sospechoso
+4,we,yy,666666,4,2023-07-02,14:33,Desplazamiento sospechoso
+107,1,1,1e+14,1,2023-07-05,19:24,Monto mayor a 1.000.000
+4,we,yy,666666,4,2023-07-02,14:33,Desplazamiento sospechoso
+107,1,1,1e+14,1,2023-07-05,19:24,Monto mayor a 1.000.000

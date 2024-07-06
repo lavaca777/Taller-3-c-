@@ -7,14 +7,13 @@
             "command": "g++",
             "args": [
                 "-g",
-                "-std=c++17",
-                "-mconsole",
                 "${workspaceFolder}/src/*.cpp",
                 "${workspaceFolder}/Main.cpp",
                 "-I",
                 "${workspaceFolder}/include",
                 "-o",
-                "${workspaceFolder}/build/proyecto"
+                "${workspaceFolder}/build/proyecto",
+                "-std=c++17"
             ],
             "group": {
                 "kind": "build",
