@@ -16,10 +16,16 @@ NodoLista* ListaEnlazada::obtenerCabeza() const {
     return cabeza;
 }
 
-bool ListaEnlazada::contieneCuenta(const string& cuenta) const {
+string obtenerAnioMes(const string& fecha) {
+    return fecha.substr(0, 7); // Suponiendo que la fecha tiene el formato "YYYY-MM-DD"
+}
+
+bool ListaEnlazada::contieneCuenta(const string& cuenta, const string& fechaTransaccion) const {
     NodoLista* actual = cabeza;
     while (actual != nullptr) {
-        if (actual->transaccion->cuentaOrigen == cuenta || actual->transaccion->cuentaDestino == cuenta) {
+        Transaccion* t = actual->transaccion;
+        if ((t->cuentaOrigen == cuenta || t->cuentaDestino == cuenta) &&
+            obtenerAnioMes(t->fecha) == obtenerAnioMes(fechaTransaccion)) {
             return true;
         }
         actual = actual->siguiente;

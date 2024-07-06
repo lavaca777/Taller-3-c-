@@ -72,8 +72,9 @@ bool ArbolAVL::esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& 
         return true;
     }
 
-    if (cuentasSospechosas.contieneCuenta(transaccion->cuentaOrigen) || cuentasSospechosas.contieneCuenta(transaccion->cuentaDestino)) {
-        motivo = "Cuenta previamente sospechosa";
+    if (cuentasSospechosas.contieneCuenta(transaccion->cuentaOrigen, transaccion->fecha) ||
+        cuentasSospechosas.contieneCuenta(transaccion->cuentaDestino, transaccion->fecha)) {
+        motivo = "Cuenta previamente sospechosa en el mismo mes y año";
         return true;
     }
 

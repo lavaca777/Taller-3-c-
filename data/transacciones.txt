@@ -1,6 +1,8 @@
-101,CuentaOrigen1,CuentaDestino1,1500.75,Ubicacion1,2023-07-02,10:30
-102,CuentaOrigen2,CuentaDestino2,200.5,Ubicacion2,2023-07-02,11:45
-103,CuentaOrigen3,CuentaDestino3,1000,Ubicacion3,2023-07-02,12:15
-104,CuentaOrigen4,CuentaDestino4,500.25,Ubicacion4,2023-07-02,13:00
-105,CuentaOrigen5,CuentaDestino5,700.8,Ubicacion5,2023-07-02,14:30
-106,pedro,ja,666666,1,2023-07-03,12:40
+1,CuentaOrigen1,CuentaDestino1,1500.75,Ubicacion1,2023-07-02,10:30
+2,CuentaOrigen2,CuentaDestino2,200.5,Ubicacion2,2023-07-02,11:45
+3,CuentaOrigen3,CuentaDestino3,1000,Ubicacion3,2023-07-02,12:15
+4,CuentaOrigen4,CuentaDestino4,500.25,Ubicacion4,2023-07-02,13:00
+5,CuentaOrigen5,CuentaDestino5,700.8,Ubicacion5,2023-07-02,14:30
+6,pedro,ja,666666,1,2023-07-03,12:40
+7,4,t,5000,u2,2023-07-05,15:20
+8,we,wa,12000,u2,2023-08-03,12:15
