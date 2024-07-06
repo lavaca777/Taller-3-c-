@@ -64,7 +64,6 @@ La clase `ListaEnlazada` maneja una lista enlazada de cuentas sospechosas. Cada 
    - `1. Registrar Transacción`: Permite registrar una nueva transacción en el sistema.
    - `2. Buscar Transacción por ID`: Busca una transacción específica por su ID y la muestra en pantalla.
    - `3. Generar Reporte de Transacciones Sospechosas`: Muestra un reporte detallado de todas las transacciones marcadas como sospechosas, incluyendo el motivo de la sospecha.
-   - `4. Guardar Transacciones y Cuentas Sospechosas`: Guarda todos los datos de transacciones y cuentas sospechosas en los archivos correspondientes.
    - `0. Salir`: Guarda los datos y cierra el programa.
 
 2. **Registrar Transacción**:
