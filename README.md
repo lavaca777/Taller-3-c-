@@ -1,7 +1,3 @@
-Here's the updated README file for your financial transaction management system project, including examples of suspicious transactions and transaction records in text files:
-
----
-
 # Sistema de Gestión de Transacciones Financieras
 
 Este proyecto implementa un sistema de gestión de transacciones financieras en C++, diseñado para manejar registros de transacciones y detectar transacciones sospechosas basadas en ciertos criterios predefinidos.
