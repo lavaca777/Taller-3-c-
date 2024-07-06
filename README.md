@@ -1,85 +1,89 @@
-Para crear un README que describa tu proyecto de forma clara y completa, puedes estructurarlo de la siguiente manera:
+Here's a README template for your financial transaction management system project:
 
 ---
 
-# Sistema de Gestión de Farmacia
+# Sistema de Gestión de Transacciones Financieras
 
-Este proyecto implementa un sistema de gestión para una farmacia en C++, permitiendo gestionar el inventario de productos y la atención prioritaria a clientes. Facilita la generación de boletas de compra y la actualización automática del inventario.
+Este proyecto implementa un sistema de gestión de transacciones financieras en C++, diseñado para administrar y analizar transacciones bancarias. Permite detectar transacciones sospechosas, gestionar cuentas de usuarios y generar reportes relevantes para análisis de riesgos y cumplimiento normativo.
 
 ## Funcionalidades
 
-- **Gestión de Inventario**: Agregar, buscar y mostrar productos en el inventario.
-- **Atención de Clientes**: Manejo de una cola prioritaria para clientes según su categoría.
-- **Generación de Boletas**: Creación detallada de boletas de compra para los clientes atendidos.
-- **Actualización de Inventario**: Actualización automática del archivo de productos después de cada transacción.
+- **Registro y Almacenamiento de Transacciones**: Permite registrar nuevas transacciones y almacenarlas en una estructura de datos eficiente.
+  
+- **Detección de Transacciones Sospechosas**: Utiliza criterios predefinidos para detectar transacciones que podrían ser sospechosas, como montos elevados, ubicaciones inusuales, y patrones de transferencias.
+
+- **Gestión de Cuentas Sospechosas**: Permite administrar una lista de cuentas sospechosas, indicando el motivo de la sospecha y la fecha de detección.
+
+- **Generación de Reportes**: Genera reportes detallados de transacciones sospechosas y cuentas marcadas como riesgosas, facilitando el análisis posterior por parte del equipo de cumplimiento.
 
 ## Descripción de los Objetos Principales
 
-### 1. Inventario (`Inventario`)
+### 1. Transacción (`Transaccion`)
 
-La clase `Inventario` gestiona todas las operaciones relacionadas con los productos de la farmacia, incluyendo agregar, buscar, y mostrar productos en el inventario, así como actualizar el archivo de productos.
+La clase `Transaccion` representa una transacción financiera entre dos cuentas. Cada objeto `Transaccion` contiene atributos como ID, cuenta origen, cuenta destino, monto, ubicación, fecha y hora de la transacción.
 
-### 2. Producto (`Producto`)
+### 2. Árbol AVL (`ArbolAVL`)
 
-La clase `Producto` representa un producto en el inventario, con atributos como ID, categoría, nombre, precio y cantidad. Permite restar y sumar cantidades del stock disponible.
+La clase `ArbolAVL` implementa un árbol AVL para almacenar y gestionar eficientemente las transacciones. Incluye métodos para inserción, búsqueda y eliminación de transacciones, así como operaciones específicas para la detección de transacciones sospechosas.
 
-### 3. Cliente (`Cliente`)
+### 3. Lista Enlazada (`ListaEnlazada`)
 
-La clase `Cliente` modela a los clientes en la cola de atención, con atributos como nombre, rut y prioridad basada en su condición (tercera edad, discapacitado, embarazada, normal).
+La clase `ListaEnlazada` maneja una lista enlazada de cuentas sospechosas. Cada nodo de la lista contiene una transacción marcada como sospechosa y el motivo asociado.
 
-### 4. Gestión de Clientes (`GestionClientes`)
+## Archivos de Datos
 
-La clase `GestionClientes` maneja la cola de clientes, permitiendo agregar clientes con prioridad y atenderlos en orden de llegada. Incluye funciones para agregar clientes y atender al siguiente cliente en la cola.
-
-### Archivos de Datos
-
-- `clientes.txt`: Archivo que almacena información de los clientes.
-- `productos.txt`: Archivo que almacena información de los productos en el inventario.
+- `transacciones.txt`: Archivo que almacena la información de todas las transacciones registradas en el sistema.
+  
+- `sospechosos.txt`: Archivo que contiene la lista de cuentas marcadas como sospechosas, junto con el motivo de la sospecha y otros detalles relevantes.
 
 ## Compilación y Ejecución
 
 ### Método 1: Compilación desde la Línea de Comandos
 
-1. **Compilar el código**:
-    ```sh
-    g++ src/Inventario.cpp src/Producto.cpp src/ListaEnlazada.cpp src/HashMap.cpp src/GestionClientes.cpp src/Cliente.cpp src/Nodo.cpp main.cpp -I include -o farmacia
-    ```
+1. **Compilar el Código**:
+   ```sh
+   g++ -o main main.cpp ArbolAVL.cpp Transaccion.cpp Util.cpp ListaEnlazada.cpp -I include
+   ```
 
-2. **Ejecutar el programa**:
-    ```sh
-    ./farmacia
-    ```
+2. **Ejecutar el Programa**:
+   ```sh
+   ./main.exe
+   ```
 
 ### Método 2: Ejecución desde el Entorno de Desarrollo
 
 1. **Abrir el Proyecto**:
-    Abre el proyecto en tu entorno de desarrollo preferido.
+   Abre el proyecto en tu entorno de desarrollo preferido (por ejemplo, Visual Studio Code, CodeBlocks).
 
 2. **Compilar y Ejecutar**:
-    Utiliza la función de compilación y ejecución integrada en tu entorno de desarrollo.
+   Utiliza las funciones de compilación y ejecución integradas en tu entorno de desarrollo para compilar y ejecutar el programa.
 
 ## Uso
 
 1. **Menú Principal**:
-    - `1. Ingresar cliente a la cola`: Añade un cliente a la cola de atención con su respectiva prioridad.
-    - `2. Atender cliente`: Atiende al siguiente cliente en la cola y genera una boleta de compra.
-    - `3. Agregar producto a bodega`: Añade un nuevo producto al inventario.
-    - `4. Aumentar Stock`: Incrementa la cantidad disponible de un producto existente.
-    - `5. Salir`: Guarda los datos y cierra el programa.
+   - `1. Registrar Transacción`: Permite registrar una nueva transacción en el sistema.
+   - `2. Buscar Transacción por ID`: Busca una transacción específica por su ID y la muestra en pantalla.
+   - `3. Generar Reporte de Transacciones Sospechosas`: Muestra un reporte detallado de todas las transacciones marcadas como sospechosas, incluyendo el motivo de la sospecha.
+   - `4. Guardar Transacciones y Cuentas Sospechosas`: Guarda todos los datos de transacciones y cuentas sospechosas en los archivos correspondientes.
+   - `0. Salir`: Guarda los datos y cierra el programa.
 
-2. **Atención de Clientes**:
-    - Al atender a un cliente, se muestra el inventario actualizado y se genera una boleta detallada.
+2. **Registrar Transacción**:
+   - Ingresa los detalles de la nueva transacción, incluyendo cuenta origen, cuenta destino, monto, ubicación, fecha y hora.
 
-## Equipo de Trabajo
+3. **Buscar Transacción por ID**:
+   - Permite buscar una transacción específica por su ID y muestra todos los detalles asociados.
 
-- **Inti Bautista Santibáñez Walker**
-  - **RUT**: 21.275.258-4
-  - **Correo**: inti.santibanez@alumnos.ucn.cl
+4. **Generar Reporte de Transacciones Sospechosas**:
+   - Muestra un listado de todas las transacciones marcadas como sospechosas, junto con el motivo de la sospecha.
 
-- **Carlos Andres Tapia Paredes**
-  - **RUT**: 21.458.544-8
-  - **Correo**: carlos.tapia03@alumnos.ucn.cl
+## Equipo de Desarrollo
+
+- **Nombre del Desarrollador 1**
+  - **Correo Electrónico**: desarrollador1@example.com
+
+- **Nombre del Desarrollador 2**
+  - **Correo Electrónico**: desarrollador2@example.com
 
 ---
 
-Puedes usar este esquema como base para crear tu README, asegurándote de personalizarlo con los detalles específicos de tu proyecto y ajustando la información según sea necesario.
+Personaliza este README según los detalles específicos de tu proyecto y los nombres de los desarrolladores involucrados.
