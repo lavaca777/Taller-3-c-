@@ -1,17 +1,5 @@
 {
-    "configurations": [
-        {
-            "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/include",
-                "${workspaceFolder}/**"
-            ],
-            "defines": [],
-            "compilerPath": "C:/MinGW/bin/g++.exe",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "gcc-x64"
-        }
-    ],
-    "version": 4
+    "files.associations": {
+        "iostream": "cpp"
+    }
 }
