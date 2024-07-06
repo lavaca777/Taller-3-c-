@@ -89,6 +89,12 @@ Estructura de datos enlazada para almacenar cuentas sospechosas con la siguiente
     - `3. Generar Reporte de Transacciones Sospechosas`: Muestra las transacciones marcadas como sospechosas y sus motivos.
     - `0. Salir`: Cierra el programa.
 
----
+## Equipo de Desarrollo
 
-Este README proporciona una visión general del proyecto de gestión de transacciones financieras, incluyendo cómo compilar, ejecutar y utilizar las principales funcionalidades.
+- **Nombre del Desarrollador 1**
+  - **Correo Electrónico**: desarrollador1@example.com
+
+- **Nombre del Desarrollador 2**
+  - **Correo Electrónico**: desarrollador2@example.com
+
+---
