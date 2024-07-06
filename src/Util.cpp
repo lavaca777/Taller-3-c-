@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-void guardarTransaccionesRecursivo(NodoArbol* nodo, ofstream& file) {
+void Util::guardarTransaccionesRecursivo(NodoArbol* nodo, ofstream& file) {
     if (nodo == nullptr) {
         return;
     }
@@ -13,13 +13,13 @@ void guardarTransaccionesRecursivo(NodoArbol* nodo, ofstream& file) {
     guardarTransaccionesRecursivo(nodo->derecha, file);
 }
 
-void guardarTransacciones(ArbolAVL& arbol, const string& filename) {
+void Util::guardarTransacciones(ArbolAVL& arbol, const string& filename) {
     ofstream file(filename, ios::out);  // Open in write mode
     guardarTransaccionesRecursivo(arbol.raiz, file);
     file.close();
 }
 
-ArbolAVL cargarTransacciones(const string& filename, ListaEnlazada& cuentasSospechosas) {
+ArbolAVL Util::cargarTransacciones(const string& filename, ListaEnlazada& cuentasSospechosas) {
     ifstream file(filename);
     ArbolAVL arbol;
     string linea;
@@ -46,7 +46,7 @@ ArbolAVL cargarTransacciones(const string& filename, ListaEnlazada& cuentasSospe
     return arbol;
 }
 
-void guardarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
+void Util::guardarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
     ifstream inputFile(filename);
     ofstream outputFile("temp.txt");  // Archivo temporal para almacenar nuevas cuentas sospechosas
 
@@ -117,9 +117,7 @@ void guardarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& 
     rename("temp.txt", filename.c_str());
 }
 
-
-
-void cargarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
+void Util::cargarCuentasSospechosas(ListaEnlazada& cuentasSospechosas, const string& filename) {
     ifstream file(filename);
     string linea;
 

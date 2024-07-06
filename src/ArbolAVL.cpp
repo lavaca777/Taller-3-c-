@@ -66,11 +66,8 @@ Transaccion* ArbolAVL::buscarRecursivo(NodoArbol* nodo, int id) {
 
 bool ArbolAVL::esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas, ArbolAVL& transacciones, string& motivo) {
     double montoMaximo = 1000000;
-
-    if (transaccion->monto > montoMaximo) {
-        motivo = "Monto mayor a 1.000.000";
-        return true;
-    }
+    double montoAlto = 600000;
+    int intervaloMinutos = 3;
 
     if (cuentasSospechosas.contieneCuenta(transaccion->cuentaOrigen, transaccion->fecha) ||
         cuentasSospechosas.contieneCuenta(transaccion->cuentaDestino, transaccion->fecha)) {
@@ -78,8 +75,18 @@ bool ArbolAVL::esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& 
         return true;
     }
 
+    if (transaccion->monto > montoMaximo) {
+        motivo = "Monto mayor a 1.000.000";
+        return true;
+    }
+
     if (ubicacionSospechosa(transaccion, transacciones)) {
         motivo = "Desplazamiento sospechoso";
+        return true;
+    }
+
+    if (transferenciasAltasEnPocoTiempo(transaccion, transacciones, montoAlto, intervaloMinutos)) {
+        motivo = "Transferencias altas en poco tiempo";
         return true;
     }
 
@@ -155,6 +162,37 @@ int ArbolAVL::diferenciaHoras(const string& hora1, const string& hora2) {
     int diferencia = abs(totalMinutos1 - totalMinutos2);
 
     return diferencia;
+}
+
+bool ArbolAVL::transferenciasAltasEnPocoTiempo(Transaccion* transaccion, ArbolAVL& arbolAVL, double montoAlto, int intervaloMinutos) {
+    string fechaActual = transaccion->fecha;
+    string horaActual = transaccion->hora;
+    int transaccionesAltas = 0;
+
+    contarTransferenciasAltas(raiz, transaccion, fechaActual, horaActual, montoAlto, intervaloMinutos, transaccionesAltas);
+
+    return transaccionesAltas >= 1;
+}
+
+void ArbolAVL::contarTransferenciasAltas(NodoArbol* nodo, Transaccion* transaccionActual, const string& fechaActual, const string& horaActual, double montoAlto, int intervaloMinutos, int& contador) {
+    if (nodo == nullptr) {
+        return;
+    }
+
+    contarTransferenciasAltas(nodo->izquierda, transaccionActual, fechaActual, horaActual, montoAlto, intervaloMinutos, contador);
+
+    Transaccion* transaccionNodo = nodo->transaccion;
+
+    if (transaccionNodo != transaccionActual &&
+        transaccionNodo->fecha == fechaActual &&
+        (transaccionNodo->cuentaOrigen == transaccionActual->cuentaOrigen || 
+         transaccionNodo->cuentaDestino == transaccionActual->cuentaDestino) &&
+        transaccionNodo->monto > montoAlto &&
+        diferenciaHoras(transaccionNodo->hora, horaActual) <= intervaloMinutos) {
+        contador++;
+    }
+
+    contarTransferenciasAltas(nodo->derecha, transaccionActual, fechaActual, horaActual, montoAlto, intervaloMinutos, contador);
 }
 
 int ArbolAVL::obtenerAltura(NodoArbol* nodo) {

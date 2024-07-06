@@ -19,8 +19,8 @@ int main() {
     ListaEnlazada cuentasSospechosas;
     int opcion;
 
-    arbolAVL = cargarTransacciones("data/transacciones.txt", cuentasSospechosas);
-    cargarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
+    arbolAVL = Util::cargarTransacciones("data/transacciones.txt", cuentasSospechosas);
+    Util::cargarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
 
     do {
         mostrarMenu();
@@ -73,13 +73,13 @@ int main() {
                 break;
             }
             case 4: {
-                guardarTransacciones(arbolAVL, "data/transacciones.txt");
-                guardarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
+                Util::guardarTransacciones(arbolAVL, "data/transacciones.txt");
+                Util::guardarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
                 break;
             }
             case 0: {
-                guardarTransacciones(arbolAVL, "data/transacciones.txt");
-                guardarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
+                Util::guardarTransacciones(arbolAVL, "data/transacciones.txt");
+                Util::guardarCuentasSospechosas(cuentasSospechosas, "data/sospechosos.txt");
                 cout << "Saliendo..." << endl;
                 break;
             }
