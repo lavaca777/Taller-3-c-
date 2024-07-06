@@ -14,8 +14,8 @@ public:
     int obtenerUltimoId() const;
     int obtenerUltimoIdEnArbol(NodoArbol* nodo) const;
     bool esTransaccionSospechosa(Transaccion* transaccion, ListaEnlazada& cuentasSospechosas, ArbolAVL& tansacciones, string& motivo);
-    void ArbolAVL::contarTransferenciasAltas(NodoArbol* nodo, Transaccion* transaccionActual, const string& fechaActual, const string& horaActual, double montoAlto, int intervaloMinutos, int& contador);
-    bool ArbolAVL::transferenciasAltasEnPocoTiempo(Transaccion* transaccion, ArbolAVL& arbolAVL, double montoAlto, int intervaloMinutos);
+    void contarTransferenciasAltas(NodoArbol* nodo, Transaccion* transaccionActual, const string& fechaActual, const string& horaActual, double montoAlto, int intervaloMinutos, int& contador);
+    bool transferenciasAltasEnPocoTiempo(Transaccion* transaccion, ArbolAVL& arbolAVL, double montoAlto, int intervaloMinutos);
 
 private:
     NodoArbol* insertarRecursivo(NodoArbol* nodo, Transaccion* transaccion);
