@@ -1,2 +1,6 @@
+10,pedro,pepe,7.77778e+06,u10,2040-05-06,12:04,Monto mayor a 1.000.000
 4,we,yy,666666,4,2023-07-02,14:33,Desplazamiento sospechoso
 8,we,qq,1500,u1,2023-07-05,12:15,Cuenta previamente sospechosa en el mismo mes y año
+10,pedro,pepe,7.77778e+06,u10,2040-05-06,12:04,Monto mayor a 1.000.000
+10,pedro,pepe,777777,u1,2023-07-07,12:31,Transferencias altas en poco tiempo
+11,ben,pedro,1500,u3,2023-07-08,11:11,Cuenta previamente sospechosa en el mismo mes y año
